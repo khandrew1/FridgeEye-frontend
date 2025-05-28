@@ -9,7 +9,9 @@ import argparse
 parser = argparse.ArgumentParser()
 parser.add_argument("filename", type=str, help="filename of the image to process")
 parser.add_argument("--network", type=str, default="googlenet", help="model to use, can be:  googlenet, resnet-18, ect.")
+parser.add_argument("--topK", type=int, default=5, help="top k")
 args = parser.parse_args()
+
 
 # load an image (into shared CPU/GPU memory)
 img = jetson.utils.loadImage(args.filename)
@@ -23,7 +25,7 @@ class_idx, confidence = net.Classify(img)
 # find the object description
 class_desc = net.GetClassDesc(class_idx)
 
-predictions = net.Classify(img)
+predictions = net.Classify(img, topK=args.topK)
 
 for n, (classID, confidence) in enumerate(predictions):
    classLabel = net.GetClassLabel(classID)

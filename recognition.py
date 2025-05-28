@@ -31,6 +31,10 @@ for n, (classID, confidence) in enumerate(predictions):
    classLabel = net.GetClassLabel(classID)
    confidence *= 100.0
    print(f"imagenet:  {confidence:05.2f}% class #{classID} ({classLabel})")
+        font.OverlayText(img, text=f"{confidence:05.2f}% {classLabel}", 
+                         x=5, y=5 + n * (font.GetSize() + 5),
+                         color=font.White, background=font.Gray40)
+
 
 # print out the result
 # print("image is recognized as '{:s}' (class #{:d}) with {:f}% confidence".format(class_desc, class_idx, confidence * 100))

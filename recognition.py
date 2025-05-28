@@ -23,7 +23,7 @@ class_idx, confidence = net.Classify(img)
 # find the object description
 class_desc = net.GetClassDesc(class_idx)
 
-predictions = net.Classify(img, topK=args.topK)
+predictions = net.Classify(img)
 
 for n, (classID, confidence) in enumerate(predictions):
    classLabel = net.GetClassLabel(classID)

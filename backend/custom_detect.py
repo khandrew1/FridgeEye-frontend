@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 import sys
 import argparse
+import os
 
 from jetson_inference import detectNet
 from jetson_utils import videoSource, videoOutput, Log
@@ -22,8 +23,10 @@ parser.add_argument("--overlay", type=str, default="box,labels,conf", help="dete
 parser.add_argument("--threshold", type=float, default=0.5, help="minimum detection threshold to use") 
 
 cred = credentials.Certificate('./serviceAccountKey.json')
-firebase_admin.initialize_app(cred)
-fb_db_path = os.getenv('FB_DB_PATH')
+fb_db_path = 'https://fridge-eye-ff051-default-rtdb.firebaseio.com/'
+firebase_admin.initialize_app(cred, {
+    'databaseURL': fb_db_path
+})
 
 try:
 	args = parser.parse_known_args()[0]
@@ -41,7 +44,7 @@ net = detectNet(model="/jetson-inference/python/training/detection/ssd/models/fr
                 input_blob="input_0", output_cvg="scores", output_bbox="boxes", 
                 threshold=args.threshold)
 
-db_ref = db.reference(fb_db_path)
+db_ref = db.reference('/foodItems')
 
 # capture the next image
 img = input.Capture()

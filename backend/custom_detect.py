@@ -2,6 +2,9 @@
 import sys
 import argparse
 import os
+import cv2
+import base64
+import numpy as np
 
 from jetson_inference import detectNet
 from jetson_utils import videoSource, videoOutput, Log
@@ -56,12 +59,36 @@ detections = net.Detect(img, overlay=args.overlay)
 print("detected {:d} objects in image".format(len(detections)))
 
 for detection in detections:
+    # Get the bounding box
+    left, top, right, bottom = int(detection.Left), int(detection.Top), int(detection.Right), int(detection.Bottom)
+
+    # Convert jetson_utils image to numpy array
+    img_np = np.array(img)
+
+    # Crop the detection from the image
+    cropped = img_np[top:bottom, left:right]
+
+    # Encode the cropped image as base64
+    _, buffer = cv2.imencode('.jpg', cropped)
+    encoded_string = base64.b64encode(buffer).decode('utf-8')
+
+    # Prepare data for Firebase
     data = {
         'itemName': net.GetClassDesc(detection.ClassID),
-        'quantity': 1
+        'quantity': 1,
+        'imageBase64': encoded_string
     }
+
     db_ref.push(data)
     print(detection)
+
+# for detection in detections:
+#     data = {
+#         'itemName': net.GetClassDesc(detection.ClassID),
+#         'quantity': 1
+#     }
+#     db_ref.push(data)
+#     print(detection)
 
 # render the image
 output.Render(img)

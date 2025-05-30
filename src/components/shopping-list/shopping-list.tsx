@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { ref, onValue } from "firebase/database"; 
 import { db } from "@/firebase"; 
 import ShoppingCard from "./shopping-card";
-import { Button } from "@/components/ui/button";
 
 interface ShoppingItem {
   id: string;
@@ -47,32 +46,6 @@ const ShoppingList = () => {
     // Cleanup subscription on component unmount
     return () => unsubscribe();
   }, []); // Empty dependency array means this effect runs once on mount and cleanup on unmount
-
-  // This function is to add new items, as in your original code
-  const handleAddItem = async () => {
-    try {
-      const response = await fetch("/api/addItem", { // Assuming your API endpoint adds 'createdAt'
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          itemName: "New Item " + Math.floor(Math.random() * 100), // Example dynamic name
-          quantity: Math.floor(Math.random() * 10) + 1,
-        }),
-      });
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || "Failed to add item");
-      }
-      const result = await response.json();
-      console.log("Item added via API:", result);
-      // Realtime listener will update the UI, or you could optimistically update here
-    } catch (err) {
-      console.error("Error adding item:", err);
-      // Optionally, set an error state to show in the UI
-    }
-  };
 
   if (isLoading) {
     return <div className="flex justify-center items-center h-full w-full"><p>Loading shopping list...</p></div>;

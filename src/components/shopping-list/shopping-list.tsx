@@ -84,21 +84,10 @@ const ShoppingList = () => {
 
   return (
     <div className="p-4 w-full">
-      <div className="mb-8 flex justify-center">
-        <Button
-          onClick={handleAddItem} // Renamed for clarity
-          variant="outline"
-          size="lg"
-          className="cursor-pointer"
-        >
-          Add Random Item (via API)
-        </Button>
-      </div>
-
       {items.length === 0 ? (
         <p className="text-center text-gray-500">Your shopping list is empty. Add some items!</p>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 overflow-y-scroll sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {items.map((item) => (
             <ShoppingCard
               key={item.id}

@@ -28,7 +28,7 @@ input = videoSource(args.input, argv=sys.argv)
 output = videoOutput(args.output, argv=sys.argv)
 	
 # note: to hard-code the paths to load a model, the following API can be used:
-net = detectNet(model="model/ssd-mobilenet.onnx", labels="model/labels.txt", 
+net = detectNet(model="/jetson-inference/python/training/detection/ssd/models/fridge-pt2/ssd-mobilenet.onnx", labels="/jetson-inference/python/training/detection/ssd/models/fridge-pt2/labels.txt", 
                 input_blob="input_0", output_cvg="scores", output_bbox="boxes", 
                 threshold=args.threshold)
 

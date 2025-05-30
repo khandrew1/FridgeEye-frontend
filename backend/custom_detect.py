@@ -12,7 +12,6 @@ parser = argparse.ArgumentParser(description="Locate objects in a live camera st
 
 parser.add_argument("input", type=str, default="", nargs='?', help="URI of the input stream")
 parser.add_argument("output", type=str, default="", nargs='?', help="URI of the output stream")
-parser.add_argument("--network", type=str, default="ssd-mobilenet-v2", help="pre-trained model to load (see below for options)")
 parser.add_argument("--overlay", type=str, default="box,labels,conf", help="detection overlay flags (e.g. --overlay=box,labels,conf)\nvalid combinations are:  'box', 'labels', 'conf', 'none'")
 parser.add_argument("--threshold", type=float, default=0.5, help="minimum detection threshold to use") 
 
@@ -35,8 +34,6 @@ net = detectNet(model="/jetson-inference/python/training/detection/ssd/models/fr
 # capture the next image
 img = input.Capture()
 
-if img is None: # timeout
-    continue  
     
 # detect objects in the image (with overlay)
 detections = net.Detect(img, overlay=args.overlay)
@@ -55,7 +52,3 @@ output.SetStatus("{:s} | Network {:.0f} FPS".format(args.network, net.GetNetwork
 
 # print out performance info
 net.PrintProfilerTimes()
-
-# exit on input/output EOS
-if not input.IsStreaming() or not output.IsStreaming():
-    break

@@ -1,31 +1,31 @@
 import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardTitle,
+    Card,
+    CardContent,
+    CardTitle,
 } from "@/components/ui/card";
 import Image from "next/image";
 
 const ShoppingCard = ({
-  itemName,
-  quantity,
+    itemName,
+    image
 }: {
-  itemName: string;
-  quantity: number;
+    itemName: string;
+    image?: string;
 }) => {
-  return (
-    <Card>
-      <div className="flex flex-row px-3">
-        <Image src="/banana.webp" alt="Banana" width={150} height={150} />
-        <div className="flex flex-col w-full">
-          <CardContent>
-            <CardTitle>{itemName}</CardTitle>
-            <CardDescription>Quantity: {quantity}</CardDescription>
-          </CardContent>
-        </div>
-      </div>
-    </Card>
-  );
+    const base64URL = `data:image/png;base64,${image}`
+
+    return (
+        <Card>
+            <div className="flex flex-row px-3">
+                <Image src={base64URL} alt="Banana" width={150} height={150} />
+                <div className="flex flex-col w-full">
+                    <CardContent>
+                        <CardTitle>{itemName}</CardTitle>
+                    </CardContent>
+                </div>
+            </div>
+        </Card>
+    );
 };
 
 export default ShoppingCard;

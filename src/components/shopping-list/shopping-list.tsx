@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button";
 interface ShoppingItem {
   id: string;
   itemName: string;
-  quantity: number;
+  image: string;
 }
 
 const ShoppingList = () => {
@@ -29,7 +29,7 @@ const ShoppingList = () => {
           const loadedItems: ShoppingItem[] = Object.keys(data).map((key) => ({
             id: key,
             itemName: data[key].itemName,
-            quantity: data[key].quantity,
+            image: data[key].imageBase64,
           }));
           setItems(loadedItems);
         } else {
@@ -103,7 +103,7 @@ const ShoppingList = () => {
             <ShoppingCard
               key={item.id}
               itemName={item.itemName}
-              quantity={item.quantity}
+              image={item.image}
             />
           ))}
         </div>

@@ -33,7 +33,6 @@ net = detectNet(model="/jetson-inference/python/training/detection/ssd/models/fr
 
 # capture the next image
 img = input.Capture()
-
     
 # detect objects in the image (with overlay)
 detections = net.Detect(img, overlay=args.overlay)
@@ -42,13 +41,11 @@ detections = net.Detect(img, overlay=args.overlay)
 print("detected {:d} objects in image".format(len(detections)))
 
 for detection in detections:
+    print("OBJECT DETECTED: " net.GetClassLabel(detection.ClassID))
     print(detection)
 
 # render the image
 output.Render(img)
-
-# update the title bar
-output.SetStatus("{:s} | Network {:.0f} FPS".format(args.network, net.GetNetworkFPS()))
 
 # print out performance info
 net.PrintProfilerTimes()
